@@ -8,6 +8,10 @@ const App = () => {
   const [videos, setVideos] = useState([]);
   const [selectedVideo, setSelectedVideo] = useState(null);
 
+  useEffect(() => {
+    onTermSubmit('React Tutorial by By Brad Traversy');
+  }, []);
+
   const onTermSubmit = async (term) => {
     const response = await youtube.get('/search', {
       params: {
@@ -22,14 +26,6 @@ const App = () => {
     setSelectedVideo(response.data.items[0]);
   };
 
-  const onVideoSelect = (video) => {
-    setSelectedVideo(video);
-  };
-
-  useEffect(() => {
-    onTermSubmit('React Tutorial by By Brad Traversy');
-  }, []);
-
   return (
     <div className='ui container'>
       <SearchBar onFormSubmit={onTermSubmit} />
@@ -39,7 +35,10 @@ const App = () => {
             <VideoDetail video={selectedVideo} />
           </div>
           <div className='five wide column'>
-            <VideoList videos={videos} onVideoSelect={onVideoSelect} />
+            <VideoList
+              videos={videos}
+              onVideoSelect={(video) => setSelectedVideo(video)}
+            />
           </div>
         </div>
       </div>
